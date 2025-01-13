@@ -35,9 +35,6 @@ class Player{
     }
 }
 
-// Fisher-Yates algorithm for randomly sorting an array
-// from: https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
-// adapted to JS and reconfigured to return a new (non-mutated) array
 function shuffleArray(targetArray) {
     let shuffled = Array.from(targetArray);
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -63,7 +60,6 @@ function sumArrayElements(array){
         sum += array[i];
     }
     return sum;
-    // return array.reduce((total, currentNumber) => total + currentNumber);
 }
 
 const player01 = new Player();
