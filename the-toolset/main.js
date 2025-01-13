@@ -30,7 +30,7 @@ class Player{
     printPlayer(){
         console.log(`NAME: ${this.name}`);
         for(const [key, value] of Object.entries(this.attributes)){
-            console.log(`${key.slice(0,3).toLocaleUpperCase}: ${value}`);
+            console.log(`${key.slice(0,3).toUpperCase()}: ${value}`);
         }
     }
 }
