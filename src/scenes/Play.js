@@ -10,7 +10,6 @@ class Play extends Phaser.Scene{
         this.EXP = stats.EXP
     }
 
-
     create(){
         console.log('Play: create')
         console.log(`HP: ${this.HP} EXP: ${this.EXP}`)
