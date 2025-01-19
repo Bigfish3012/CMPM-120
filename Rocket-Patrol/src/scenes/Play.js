@@ -37,9 +37,9 @@ class Play extends Phaser.Scene{
 
         this.gameOver = false
         scoreConfig.fixedWidth = 0
-        this.clock = this.time.delayedCall(1000, () => {
+        this.clock = this.time.delayedCall(10000, () => {
             this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", scoreConfig).setOrigin(0.5)
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5)
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5)
             this.gameOver = true
         }, null, this)
     }
@@ -69,6 +69,9 @@ class Play extends Phaser.Scene{
             this.p1Rocket.reset()
             this.shipExplode(this.ship01) 
         }
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
+            this.scene.start("menuScene")
+        }
     }
 
     checkCollision(rocket, ship){
@@ -94,5 +97,6 @@ class Play extends Phaser.Scene{
 
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
+        this.sound.play('explosion')
     }
 }
