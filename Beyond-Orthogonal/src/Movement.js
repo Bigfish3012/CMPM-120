@@ -7,7 +7,7 @@ class Movement extends Phaser.Scene {
         this.PLAYER_VELOCITY = 300
     }
     preload() {
-        this.load.spritesheet('character', '/CMPM-120/Beyond-Orthogonal/assets/spritesheets/Character_002.png', {
+        this.load.spritesheet('character', './assets/spritesheets/Character_002.png', {
             frameWidth: 48
         })
     }
