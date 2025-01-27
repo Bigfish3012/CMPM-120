@@ -4,8 +4,8 @@ class Menu extends Phaser.Scene{
     }
     preload(){
         this.load.image('rocket', './assets/images/rocket.png')
-        this.load.image('spaceship', './assets/images/spaceship.png')
-        this.load.image('starfield', './assets/images/starfield.png')
+        this.load.atlas('spaceship_anim', './assets/images/spaceship.png', './assets/images/spaceship.json')
+        this.load.image('starfield', './assets/images/starfield_1.png')
         this.load.spritesheet('explosion', './assets/images/explosion.png', {
             frameWidth: 64,
             frameHeight: 32,
@@ -14,7 +14,14 @@ class Menu extends Phaser.Scene{
         })
         this.load.audio("select", "./assets/music/select.wav")        
         this.load.audio("explosion", "./assets/music/explosion.wav")        
-        this.load.audio("shot", "./assets/music/shot.wav")        
+        this.load.audio("shot", "./assets/music/shot.wav")  
+        this.load.audio('new_explosion1', './assets/music/new_explosion1.wav');
+        this.load.audio('new_explosion2', './assets/music/new_explosion2.wav');
+        this.load.audio('new_explosion3', './assets/music/new_explosion3.wav');
+        this.load.audio('new_explosion4', './assets/music/new_explosion4.wav');      
+        this.load.audio('backgroundMusic', './assets/music/backgroundMusic.mp3');
+        
+        this.load.atlas('fast_spaceship_anim', './assets/images/faster_spaceship.png', './assets/images/faster_spaceship.json');
     }
     create(){
         if(!this.anims.exists('explode')){
@@ -45,6 +52,30 @@ class Menu extends Phaser.Scene{
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, "Press <- for Novice or -> for Expert", menuConfig).setOrigin(0.5)
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+
+        this.anims.create({
+            key: 'spaceship_anim',
+            frames: this.anims.generateFrameNames('spaceship_anim', {
+                prefix: 'spaceship',
+                start: 0,
+                end: 3,
+                suffix: '.png'
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'fast_spaceship_anim',
+            frames: this.anims.generateFrameNames('fast_spaceship_anim', {
+                prefix: 'spaceship',
+                start: 0,
+                end: 3,
+                suffix: '.png'
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     update(){
