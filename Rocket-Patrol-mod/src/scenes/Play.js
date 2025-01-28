@@ -5,8 +5,8 @@ class Play extends Phaser.Scene{
 
     create(){
 
-        this.backgroundMusic = this.sound.add('backgroundMusic', {volume: 0.1, loop:true})
-        this.backgroundMusic.play()
+        this.background_music = this.sound.add('background_music', {volume: 0.1, loop:true}) // Reference Author: Solomon Kruse       https://stackoverflow.com/questions/37115491/how-to-set-volume-of-audio-object
+        this.background_music.play()
 
 
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0)
@@ -21,14 +21,14 @@ class Play extends Phaser.Scene{
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
 
         this.fastShip = new FasterSpaceship(this, game.config.width + borderUISize * 6, Phaser.Math.Between(borderUISize * 3, game.config.height - borderUISize * 3), 'fast_spaceship_anim', 'spaceship0.png', 50).setOrigin(0, 0);
-
+                                                                                                    // Reference Author: Tuskat       https://phaser.discourse.group/t/phaser-math-rnd-pick-from-array/3541
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
 
         this.p1Score = 0
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -40,23 +40,13 @@ class Play extends Phaser.Scene{
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, this.scoreConfig)
 
         this.gameOver = false
-        scoreConfig.fixedWidth = 0
-        this.clock = this.time.delayedCall(60000, () => {
-            this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", scoreConfig).setOrigin(0.5)
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5)
-            this.gameOver = true
-        }, null, this)
+        this.scoreConfig.fixedWidth = 0
 
-        this.highScoreText = this.add.text(game.config.width - borderUISize - borderPadding - 100, borderUISize + borderPadding * 2, `HS: ${hightestScore}`, scoreConfig);
 
-        if (this.p1Score > hightestScore) {
-            hightestScore = this.p1Score;
-            this.highScoreText.setText(`HS: ${hightestScore}`).setOrigin(0.5);
-        }
-        this.add.text(game.config.width / 2 -50, borderUISize + borderPadding + 30, 'FIRE', scoreConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 2, borderUISize + borderPadding + 30, 'FIRE', this.scoreConfig).setOrigin(0.5);
 
         this.time.delayedCall(30000, () => {
             this.ship01.moveSpeed += 1;
@@ -65,12 +55,12 @@ class Play extends Phaser.Scene{
             this.fastShip.moveSpeed += 1;
         }, null, this);
 
-        this.time_remaining = game.setting.gameTimer / 1000;
-        this.timeText = this.add.text(game.config.width/2 +10, borderUISize + borderPadding * 2, `Time: ${this.time_remaining}`, scoreConfig);
+        this.time_remaining = game.setting.gameTimer / 1000;          //Professor mentioned in class that Phaser is based on milliseconds. So we can use gameTimer / 1000 to get the number of seconds. Then use add.text to the screen.
+        this.time_text = this.add.text(game.config.width/2 + 150, borderUISize + borderPadding * 2, `Time: ${this.time_remaining}`, this.scoreConfig);
     
         
-        this.time.addEvent({
-            delay: 1000, 
+        this.time.addEvent({                                           // Reference Author: Krunal-Gadhiya     https://stackoverflow.com/questions/54630495/phaser-how-to-use-a-simple-timer-from-0-to-3
+            delay: 1000,                                               // Reference Author: Richard Davey https://rexrainbow.github.io/phaser3-rex-notes/docs/site/timer/
             callback: this.updateTimer,
             callbackScope: this,
             loop: true
@@ -82,10 +72,12 @@ class Play extends Phaser.Scene{
             this.scene.restart()
         }
         if(this.gameOver){
-            this.backgroundMusic.stop()
+            this.background_music.stop()
+            
         }
-        this.starfield.tilePositionX -= 1
+        
         if(!this.gameOver){
+            this.starfield.tilePositionX -= 1
             this.p1Rocket.update()
             this.ship01.update()
             this.ship02.update()
@@ -134,26 +126,26 @@ class Play extends Phaser.Scene{
             ship.alpha = 1
             boom.destroy()
         })
-        this.time_remaining += 2;
-        this.timeText.setText(`Time: ${Math.ceil(this.time_remaining)}`);
+        this.time_remaining += 1;
+        this.time_text.setText(`Time: ${Math.ceil(this.time_remaining)}`);
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
 
         const exp_sounds =  ['explosion', 'new_explosion1', 'new_explosion2', 'new_explosion3', 'new_explosion4'];
-        const random_sounds = Phaser.Math.RND.pick(exp_sounds);
-        this.sound.play(random_sounds);
+        const random_sounds = Phaser.Math.RND.pick(exp_sounds);       //  Reference Author: Kelly      https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array 
+        this.sound.play(random_sounds);                               
     }
 
     updateTimer() {
         if (!this.gameOver) { 
             this.time_remaining -= 1;
-            this.timeText.setText(`Time: ${Math.ceil(this.time_remaining)}`);
-    
+            this.time_text.setText(`Time: ${Math.ceil(this.time_remaining)}`);  // https://phaser.io/examples/v3.55.0/game-objects/text/view/change-text   https://phaser.discourse.group/t/how-to-change-text-in-phaser/3893 
+                                                                                // https://phaser.io/examples/v3.85.0/components/data/view/set-data-event
             
-            if (this.time_remaining <= 0) {
-                this.gameOver = true;
-                this.add.text(game.config.width / 2, game.config.height / 2, "GAME OVER", scoreConfig).setOrigin(0.5);
-                this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
+            if (this.time_remaining <= 0) {            // I moved the "this.clock = this.time.delayedCall(60000, () =>" in the professor's document here 
+                this.gameOver = true;                  // and changed it so that the game ends when the remaining time is 0, instead of after 60 seconds.
+                this.add.text(game.config.width / 2, game.config.height / 2, "GAME OVER", this.scoreConfig).setOrigin(0.5);
+                this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
             }
         }
     }

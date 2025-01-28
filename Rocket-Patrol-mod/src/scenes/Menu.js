@@ -19,7 +19,7 @@ class Menu extends Phaser.Scene{
         this.load.audio('new_explosion2', './assets/music/new_explosion2.wav');
         this.load.audio('new_explosion3', './assets/music/new_explosion3.wav');
         this.load.audio('new_explosion4', './assets/music/new_explosion4.wav');      
-        this.load.audio('backgroundMusic', './assets/music/backgroundMusic.mp3');
+        this.load.audio('background_music', './assets/music/backgroundMusic.mp3');
         
         this.load.atlas('fast_spaceship_anim', './assets/images/faster_spaceship.png', './assets/images/faster_spaceship.json');
     }
@@ -53,11 +53,11 @@ class Menu extends Phaser.Scene{
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
 
-        this.anims.create({
-            key: 'spaceship_anim',
-            frames: this.anims.generateFrameNames('spaceship_anim', {
-                prefix: 'spaceship',
-                start: 0,
+        this.anims.create({                                                                // Reference Author: Arram Mandel      https://airum82.medium.com/working-with-texture-atlases-in-phaser-3-25c4df9a747a
+            key: 'spaceship_anim',                                                         // Reference Author: Josh Morony       https://www.joshmorony.com/how-to-create-animations-in-phaser-with-a-texture-atlas/
+            frames: this.anims.generateFrameNames('spaceship_anim', {                      // The production of spaceship animation refers to the articles of these two authors, 
+                prefix: 'spaceship',                                                       // and the tutorials when the teacher taught us to make Beyond-Orthogonal in-class animations in class.
+                start: 0,                                                                  // The new enemy Spaceship/faster Spaceship just simply copies the code of the old Spaceship.
                 end: 3,
                 suffix: '.png'
             }),
