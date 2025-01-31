@@ -1,8 +1,8 @@
 "use strict"
 let config = {
     type: Phaser.AUTO,
-    width: 640,
-    height: 480,
+    width: 800,
+    height: 1100,
     // scene: [ Menu, Play ]
     scene: [Play]
 }
