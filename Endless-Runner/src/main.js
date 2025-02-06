@@ -16,10 +16,10 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Menu, Play ]
+    scene: [ Menu, Play , Intro]
 }
 
 let game = new Phaser.Game(config)
 
 let { width, height } = game.config
-let key_start, keyRESET, keyLEFT, keyRIGHT
+let key_start, keyRESET, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyFIRE
