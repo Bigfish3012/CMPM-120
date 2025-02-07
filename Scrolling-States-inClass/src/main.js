@@ -1,6 +1,6 @@
 // Code Practice: Scrolling States
-// Name:
-// Date: 
+// Name: Chengkun Li
+// Date: 02/07/2025
 
 'use strict'
 
