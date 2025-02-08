@@ -26,7 +26,6 @@ class Menu extends Phaser.Scene{
         this.load.image('sky_clouds',      './assets/images/skies/sky_clouds.png');
         this.load.image('sky_front_cloud', './assets/images/skies/Sky_front_cloud.png');
         this.load.image('sky_front_mtn',   './assets/images/skies/sky_front_mountain.png');
-        this.load.image('sky_moon',        './assets/images/skies/sky_moon.png');
         this.load.image('sky_sky',         './assets/images/skies/Sky_sky.png');
 
         //Player
@@ -123,7 +122,7 @@ class game_over extends Phaser.Scene{
     create(){
 
         if(!this.sound.get('game_over')){
-            this.background_music = this.sound.add('game_over', {loop:true})
+            this.background_music = this.sound.add('game_over', {volume: 0.7, loop:true})
             this.background_music.play()
         }else if(!this.sound.get('game_over').isPlaying){
             this.sound.get('game_over').play()
@@ -146,7 +145,7 @@ class game_over extends Phaser.Scene{
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(keyRESET)){
-            this.sound.get('background_music2').stop(); 
+            this.sound.get('game_over').stop()
             this.sound.play('select')
             this.scene.start('play_scene') 
         }
