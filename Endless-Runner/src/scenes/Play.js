@@ -16,7 +16,6 @@ class Play extends Phaser.Scene{
         this.sky_cloud_floor2 = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_cloud_floor2').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
         this.sky_cloud_floor = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_cloud_floor').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
         this.sky_front_cloud = this.add.tileSprite(0, 50, game.config.width, game.config.height, 'sky_front_cloud').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_moon = this.add.tileSprite(0, 0, game.config.width, game.config.height,'sky_moon').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
 
         //Keyboard
         key_start = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
@@ -85,7 +84,6 @@ class Play extends Phaser.Scene{
             this.sky_front_cloud.tilePositionX += 5
             this.sky_cloud_floor2.tilePositionX += 7
             this.sky_cloud_floor.tilePositionX += 6
-            this.sky_moon.tilePositionX += 0.1
 
             this.player.update();
             this.enemies.forEach(enemy => enemy.update());
