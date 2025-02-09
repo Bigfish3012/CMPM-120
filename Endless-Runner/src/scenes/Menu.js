@@ -43,6 +43,8 @@ class Menu extends Phaser.Scene{
         })
     }
     create(){
+        document.getElementById('info').innerHTML = '<strong>Menu.js:</strong> Keyboard "WASD": move | “J”: attack | R: Retry | M: go back to the main menu';
+
         if(!this.sound.get('background_music2')){
             this.background_music = this.sound.add('background_music2', {loop:true})
             this.background_music.play()

@@ -9,25 +9,28 @@ My creative tilt justification:
 
 
 References
-闪烁字体：https://phaser.discourse.group/t/make-image-sprite-fadein-fadeout-on-loop/8910  
+Flashing font：             https://phaser.discourse.group/t/make-image-sprite-fadein-fadeout-on-loop/8910  
+Sprite collision boxes:     https://www.html5gamedevs.com/topic/37761-how-to-enable-debug-showing-sprite-collision-boxes/
+overlap():                  https://docs.phaser.io/api-documentation/class/physics-arcade-arcadephysics#overlap
 */
 
 "use strict"
 let config = {
+    parent: 'phaser-game',
     type: Phaser.AUTO,
     width: 950,
     height: 500,
     physics:{
         default: 'arcade',
         arcade:{
-            debug: true,
+            debug: false,
             gravity: { y: 0 },
             debugShowBody: true,
             debugShowStaticBody: true,
             debugShowVelocity: false,
         }
     },
-    scene: [ Menu, Play , Intro, game_over]
+    scene: [ Menu, Play , Intro, game_over ]
 }
 
 let game = new Phaser.Game(config)

@@ -4,7 +4,7 @@ class Play extends Phaser.Scene{
     }
 
     create(){
-
+        //background music
         this.background_music = this.sound.add('background_music', {volume: 0.7, loop:true})
         this.background_music.play()
         //Background 1
@@ -58,12 +58,12 @@ class Play extends Phaser.Scene{
         this.last_fired = 0;
         this.last_recovered = 0;
         this.bullet_text = this.add.text(20, 20, 'Bullets: ' + this.total_bullet, { 
-            fontSize: '24px Kumar One', 
-            fill: '#FFF' 
+            fontSize: '32px Kumar One', 
+            fill: '#493D9E' 
         });
         this.score_text = this.add.text(20, 50, 'Score  : 0', { 
-            fontSize: '24px Kumar One', 
-            fill: '#FFF' 
+            fontSize: '32px Kumar One', 
+            fill: '#493D9E' 
         });
         this.score = 0;
 
@@ -139,19 +139,6 @@ class Play extends Phaser.Scene{
                 this.spawning_dog.remove();
             }
         });
-        
-        
-
-        // if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)){
-        //     this.background_music.stop()
-        //     this.sound.get('background_music2').play(); 
-        //     this.scene.start("intro_scene")
-        // }
-        // if(this.gameOver && Phaser.Input.Keyboard.JustDown(key_back)){
-        //     this.background_music.stop()
-        //     this.sound.get('background_music2').play(); 
-        //     this.scene.start("menu_scene")
-        // }
     }
 
     check_collision(player, enemy) {
@@ -190,7 +177,7 @@ class Play extends Phaser.Scene{
     
     spawn_dog() {
         this.dog = this.physics.add.sprite(this.game.config.width, Phaser.Math.Between(50, this.game.config.height - 50), 'dog');
-        
+        this.dog.setOrigin(0, 0);
         this.dog.setScale(0.1);
         this.dog.setVelocityX(-400);
         this.dog.setDepth(2); 
