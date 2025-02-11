@@ -59,11 +59,11 @@ class Play extends Phaser.Scene{
         this.last_recovered = 0;
         this.bullet_text = this.add.text(20, 20, 'Bullets: ' + this.total_bullet, { 
             fontSize: '32px Kumar One', 
-            fill: '#493D9E' 
+            fill: '#AEEA94' 
         });
         this.score_text = this.add.text(20, 50, 'Score  : 0', { 
             fontSize: '32px Kumar One', 
-            fill: '#493D9E' 
+            fill: '#AEEA94' 
         });
         this.score = 0;
 
@@ -73,7 +73,7 @@ class Play extends Phaser.Scene{
 
         if(this.gameOver){
             this.background_music.stop()
-            this.scene.start("game_over_scene")
+            this.scene.start("game_over_scene", {score: this.score})
         }
         if(!this.gameOver){
             //Background 1
@@ -87,7 +87,6 @@ class Play extends Phaser.Scene{
 
             this.player.update();
             this.enemies.forEach(enemy => enemy.update());
-
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyFIRE) && this.total_bullet > 0 && time - this.last_fired > 1500) {
@@ -116,7 +115,7 @@ class Play extends Phaser.Scene{
                         this.enemies.splice(index, 1); 
                         bullet.reset();
                         
-                        if (enemy.isDog) {
+                        if (enemy.is_dog) {
                             this.score += 50;
                             this.shipExplode(enemy)
                             
@@ -149,7 +148,7 @@ class Play extends Phaser.Scene{
     shipExplode(enemy){
         const exp_sounds =  ['explosion', 'explosion2', 'explosion3', 'explosion4', 'evil-explosion'];
         const random_sounds = Phaser.Math.RND.pick(exp_sounds);   
-        if(enemy.isDog){
+        if(enemy.is_dog){
             this.sound.play('dog_sound');
         }else{
             this.sound.play(random_sounds, { volume: 0.3 });
@@ -159,7 +158,7 @@ class Play extends Phaser.Scene{
         let boom = this.add.sprite(enemy.x, enemy.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode')
         boom.on('animationcomplete', () => {
-            if(!enemy.isDog){
+            if(!enemy.is_dog){
                 enemy.reset()
             }
             enemy.alpha = 1
@@ -184,7 +183,7 @@ class Play extends Phaser.Scene{
     
         this.dog.body.setSize(this.dog.width * 0.8, this.dog.height * 0.8);
     
-        this.dog.isDog = true;  
+        this.dog.is_dog = true;  
         this.enemies.push(this.dog);
         
     }

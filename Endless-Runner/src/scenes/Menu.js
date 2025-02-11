@@ -43,7 +43,7 @@ class Menu extends Phaser.Scene{
         })
     }
     create(){
-        document.getElementById('info').innerHTML = '<strong>Menu.js:</strong> Keyboard "WASD": move | “J”: attack | R: Retry | M: go back to the main menu';
+        document.getElementById('info').innerHTML = '<strong>Menu.js:</strong> Keyboard "WASD": move | “J”: attack | R: retry | M: go back to the main menu';
 
         if(!this.sound.get('background_music2')){
             this.background_music = this.sound.add('background_music2', {loop:true})
@@ -53,9 +53,11 @@ class Menu extends Phaser.Scene{
         }
         
         this.add.text(this.game.config.width / 2, this.game.config.height / 2 - 200, "Endless Runner", { fontSize: "60px", fill: "#FFF", fontFamily:"Kumar One"}).setOrigin(0.5);
-        this.add.text(this.game.config.width / 2, this.game.config.height / 2, "WARNING!!! \nPlease lower your game volume as some sound effects will be extremely loud", { fontSize: "20px", fill: "#FFF", align: 'center'}).setOrigin(0.5);
-        let flashText = this.add.text(this.game.config.width / 2, this.game.config.height / 2 + 150, "Press SPACE to continue", { fontSize: "24px", fill: "#FFF" }).setOrigin(0.5);
-        this.add.text(this.game.config.width / 2, this.game.config.height - 50, "Game by Chengkun Li \nCourse: Winter 2025 CMPM 120 \n\n Disclaimer: This game is only for class assignment", { fontSize: "16px", fill: "#FFF" , align: 'center',}).setOrigin(0.5);
+        this.add.text(this.game.config.width / 2, this.game.config.height / 2, "WARNING!!!", { fontSize: "40px", fill: "#E52020", align: 'center'}).setOrigin(0.5);
+        this.add.text(this.game.config.width / 2, this.game.config.height / 2+ 40, "Please lower your game volume as some sound effects will be extremely loud", { fontSize: "20px", fill: "#FFF", align: 'center'}).setOrigin(0.5);        
+        //Please lower your game volume as some sound effects will be extremely loud
+        let flashText = this.add.text(this.game.config.width / 2, this.game.config.height / 2 + 130, "Press SPACE to continue", { fontSize: "24px", fill: "#FFF" }).setOrigin(0.5);
+        this.add.text(this.game.config.width / 2, this.game.config.height - 50, "Game by Chengkun Li \n\nCourse: Winter 2025 CMPM 120 \n\n Disclaimer: This game is only for class assignment", { fontSize: "16px", fill: "#FFF" , align: 'center',}).setOrigin(0.5);
         key_start = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         
         this.tweens.add({
@@ -117,12 +119,14 @@ class game_over extends Phaser.Scene{
     constructor() {
         super('game_over_scene')
     }
-
+    init(data) {
+        this.final_score = data.score;
+}
     preload(){
         this.load.audio('game_over',  './assets/music/game_over.mp3');
     }
-    create(){
-
+    create(data){
+        
         if(!this.sound.get('game_over')){
             this.background_music = this.sound.add('game_over', {volume: 0.7, loop:true})
             this.background_music.play()
@@ -133,6 +137,9 @@ class game_over extends Phaser.Scene{
         key_start = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         key_back = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+
+        let final_score = data.score || 0;
+        this.add.text(this.game.config.width / 2, this.game.config.height / 2, `Final Score: ${final_score}`, { fontSize: "32px", fill: "#FFF"}).setOrigin(0.5);
         this.add.text(game.config.width / 2, game.config.height / 2 - 100, "GAME OVER", { fontSize: "120px", fill: "#E52020"}).setOrigin(0.5);
         let flashText = this.add.text(game.config.width / 2, game.config.height / 2 + 150, " Press 'R' to retry\n\n Press 'm' to go to the main menu ", { fontSize: "20px", fill: "#F8F5E9", fontStyle: 'bold', align:"center"}).setOrigin(0.5);
         
@@ -154,6 +161,7 @@ class game_over extends Phaser.Scene{
 
         if(Phaser.Input.Keyboard.JustDown(key_back)){
             this.sound.get('game_over').stop()
+            this.sound.play('select')
             this.scene.start("menu_scene")
         }
     }
