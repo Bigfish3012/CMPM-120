@@ -45,7 +45,7 @@ let config = {
     physics:{
         default: 'arcade',
         arcade:{
-            debug: true,
+            debug: false,
         }
     },
     scene: [ Menu, Play , Intro, game_over ]

@@ -17,16 +17,8 @@ class Menu extends Phaser.Scene{
         this.load.audio("select",            "./assets/music/select.mp3")
         this.load.audio("dog_sound",         "./assets/music/dog_sound.mp3")
         
-        //Background 1
-        
-        this.load.image('sky_back_mtn',    './assets/images/skies/Sky_back_mountain.png');
-        this.load.image('sky_cloud_floor2','./assets/images/skies/sky_cloud_floor_2.png');
-        this.load.image('sky_cloud_floor', './assets/images/skies/sky_cloud_floor.png');
-        this.load.image('sky_cloud_single','./assets/images/skies/Sky_cloud_single.png');
-        this.load.image('sky_clouds',      './assets/images/skies/sky_clouds.png');
-        this.load.image('sky_front_cloud', './assets/images/skies/Sky_front_cloud.png');
-        this.load.image('sky_front_mtn',   './assets/images/skies/sky_front_mountain.png');
-        this.load.image('sky_sky',         './assets/images/skies/Sky_sky.png');
+        //Background
+        this.load.image('backgroundImage',    './assets/images/backgroundImage.png');
 
         //Player
         this.load.atlas('player_anim', './assets/images/player.png', './assets/images/player.json')

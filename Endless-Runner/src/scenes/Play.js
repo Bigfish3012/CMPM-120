@@ -7,15 +7,9 @@ class Play extends Phaser.Scene{
         //background music
         this.background_music = this.sound.add('background_music', {volume: 0.7, loop:true})
         this.background_music.play()
-        //Background 1
-        this.sky_sky = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_sky').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_clouds = this.add.tileSprite(0, -100, game.config.width, game.config.height, 'sky_clouds').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_back_mtn = this.add.tileSprite(0, -50, game.config.width, game.config.height, 'sky_back_mtn').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_cloud_single = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_cloud_single').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_front_mtn = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_front_mtn').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_cloud_floor2 = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_cloud_floor2').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_cloud_floor = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'sky_cloud_floor').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
-        this.sky_front_cloud = this.add.tileSprite(0, 50, game.config.width, game.config.height, 'sky_front_cloud').setOrigin(0, 0).setTileScale(game.config.width/1900, game.config.height/1000)
+        // //Background
+        this.backgroundImage = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'backgroundImage').setOrigin(0, 0)
+
 
         //Keyboard
         key_start = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
@@ -76,14 +70,8 @@ class Play extends Phaser.Scene{
             this.scene.start("game_over_scene", {score: this.score})
         }
         if(!this.gameOver){
-            //Background 1
-            this.sky_clouds.tilePositionX += 0.2
-            this.sky_front_mtn.tilePositionX += 1
-            this.sky_cloud_single.tilePositionX += 3
-            this.sky_back_mtn.tilePositionX += 0.1
-            this.sky_front_cloud.tilePositionX += 5
-            this.sky_cloud_floor2.tilePositionX += 7
-            this.sky_cloud_floor.tilePositionX += 6
+            //Background
+            this.backgroundImage.tilePositionX += 1
 
             this.player.update();
             this.enemies.forEach(enemy => enemy.update());
@@ -150,8 +138,10 @@ class Play extends Phaser.Scene{
         const random_sounds = Phaser.Math.RND.pick(exp_sounds);   
         if(enemy.is_dog){
             this.sound.play('dog_sound');
+        }else if(random_sounds == 'evil-explosion'){
+            this.sound.play('evil-explosion', {volume: 0.2});
         }else{
-            this.sound.play(random_sounds, { volume: 0.3 });
+            this.sound.play(random_sounds);
         }
         
         enemy.alpha = 0
