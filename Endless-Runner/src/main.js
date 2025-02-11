@@ -15,13 +15,25 @@ My creative tilt justification:
 
 
 
+
+Credits:
+    background images(skies)：https://bongseng.itch.io/parallax-forest-desert-sky-moon
+
+    music:
+    background music2(Bit Quest):           https://incompetech.com/music/royalty-free/music.html
+    background music (Retro Game Arcade):   https://pixabay.com/music/search/8%20biy/?pagi=3
+
+    sound effects:
+    Dog，Select, Steel pipe and GameOver sound:     https://www.myinstants.com/en/index/us/
+    shot and explosion sound:                       https://sfxr.me/
+
 References
-Flashing font：                     https://phaser.discourse.group/t/make-image-sprite-fadein-fadeout-on-loop/8910  
-Debug Sprite collision boxes:       https://www.html5gamedevs.com/topic/37761-how-to-enable-debug-showing-sprite-collision-boxes/
-overlap():                          https://docs.phaser.io/api-documentation/class/physics-arcade-arcadephysics#overlap
-isPlaying():                        https://stackoverflow.com/questions/70445004/how-can-you-detect-wether-any-music-is-playing-in-phaser 
-background music:                   https://gamedevacademy.org/creating-a-phaser-3-template-part-3/?a=13
-final score:                        https://dev.to/ceceliacreates/working-with-scenes-and-data-in-phaser-2pn4#:~:text=To%20do%20this%2C%20we'll,to%20add%20the%20score%20data.
+    Flashing font：                     https://phaser.discourse.group/t/make-image-sprite-fadein-fadeout-on-loop/8910  
+    Debug Sprite collision boxes:       https://www.html5gamedevs.com/topic/37761-how-to-enable-debug-showing-sprite-collision-boxes/
+    overlap():                          https://docs.phaser.io/api-documentation/class/physics-arcade-arcadephysics#overlap
+    isPlaying():                        https://stackoverflow.com/questions/70445004/how-can-you-detect-wether-any-music-is-playing-in-phaser 
+    background music:                   https://gamedevacademy.org/creating-a-phaser-3-template-part-3/?a=13
+    final score:                        https://dev.to/ceceliacreates/working-with-scenes-and-data-in-phaser-2pn4#:~:text=To%20do%20this%2C%20we'll,to%20add%20the%20score%20data.
 */
 
 "use strict"
