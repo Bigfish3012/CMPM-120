@@ -1,6 +1,6 @@
 // Code Practice: Slime World
-// Name: 
-// Date: 
+// Name: Chengkun Li
+// Date: 02/16/2025
 
 let config = {
     type: Phaser.AUTO,
