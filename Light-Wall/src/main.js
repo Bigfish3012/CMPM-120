@@ -10,14 +10,14 @@ let config = {
     parent: 'phaser-game',
     type: Phaser.AUTO,
     width: 950,
-    height: 500,
+    height: 800,
     physics:{
         default: 'arcade',
         arcade:{
             debug: false,
         }
     },
-    scene: [Menu, Play]
+    scene: [menu, play, intro]
 }
 
 let game = new Phaser.Game(config)
