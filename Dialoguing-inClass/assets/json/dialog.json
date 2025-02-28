@@ -6,6 +6,19 @@
 			"newSpeaker" : "true"
 		},
 		{
+			"speaker" : "dio",
+			"dialog" : "Yo! What' up",
+			"newSpeaker" : "true"
+		},
+		{
+			"speaker" : "dio",
+			"dialog" : "ロードローラーだァーッ"
+		},
+		{
+			"speaker" : "dio",
+			"dialog" : "see you"
+		},
+		{
 			"speaker" : "homer",
 			"dialog" : "Many cities did he visit, and many were the nations with whose manners and customs he was acquainted."
 		},
