@@ -12,7 +12,7 @@
 		},
 		{
 			"speaker" : "dio",
-			"dialog" : "ロードローラーだァーッ"
+			"dialog" : "Nothing, I just show up to let you know I am here!"
 		},
 		{
 			"speaker" : "dio",
@@ -20,7 +20,9 @@
 		},
 		{
 			"speaker" : "homer",
-			"dialog" : "Many cities did he visit, and many were the nations with whose manners and customs he was acquainted."
+			"dialog" : "Many cities did he visit, and many were the nations with whose manners and customs he was acquainted.",
+			"newSpeaker" : "true"
+			
 		},
 		{	
 			"speaker" : "homer",
