@@ -4,14 +4,13 @@ class menu extends Phaser.Scene{
     }
 
     preload(){
-
+        this.load.path = "./assets/"
+        this.load.bitmapFont('dis_letter', 'fonts/dis_letter.png', 'fonts/dis_letter.xml')
     }
 
     create(){
-        this.add.text(this.game.config.width / 2, this.game.config.height / 2 - 200, "Light Wall", {
-            fontSize: "60px",
-            fill: "#FFF",
-        }).setOrigin(0.5);
+        this.add.bitmapText(centerX, centerY - 32, 'dis_letter', 'LIGHT WALL', 100).setOrigin(0.5)
+        this.add.bitmapText(centerX, centerY + 50, 'dis_letter', 'Press SPACE to start', 50).setOrigin(0.5)
     }
 
     update(){

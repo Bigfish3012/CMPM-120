@@ -1,7 +1,7 @@
 /*
 Name: Chengkun Li
 Game title: Light Wall
-Approximate hours spent on project: 25 hours
+Approximate hours spent on project:
 
 */
 
@@ -24,3 +24,6 @@ let game = new Phaser.Game(config)
 
 let { width, height } = game.config
 let key_start, keyRESET, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyFIRE, key_back
+const centerX = game.config.width / 2
+const centerY = game.config.height / 2
+let cursors = null
