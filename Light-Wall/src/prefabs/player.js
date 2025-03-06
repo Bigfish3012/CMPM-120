@@ -7,6 +7,7 @@ class player extends Phaser.GameObjects.Sprite{
         this.moveSpeed = 300
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);
+        this.body.setCollideWorldBounds(true)
     }
     
 
