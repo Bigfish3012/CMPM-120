@@ -14,16 +14,16 @@ let config = {
     physics:{
         default: 'arcade',
         arcade:{
-            debug: false,
+            debug: true,
         }
     },
-    scene: [menu, play, intro]
+    scene: [menu, intro, play]
 }
 
 let game = new Phaser.Game(config)
 
 let { width, height } = game.config
-let key_start, keyRESET, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyFIRE, key_back
+let key_start, keyRESET, keyLEFT, keyRIGHT, keyUP, keyDOWN, key_back
 const centerX = game.config.width / 2
 const centerY = game.config.height / 2
 let cursors = null
