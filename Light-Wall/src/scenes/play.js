@@ -68,7 +68,7 @@ class play extends Phaser.Scene{
         
 
         //timer
-        this.left_time = 10000;
+        this.left_time = 60000;
         this.time_remaining = this.left_time/1000;
         this.timer_text = this.add.bitmapText(game.config.width - 100, 30, "dis_letter_blue", `time: ${this.time_remaining}`, 40)
         this.timer_text.setDepth(1000);
