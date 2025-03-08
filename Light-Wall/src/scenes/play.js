@@ -117,7 +117,7 @@ class play extends Phaser.Scene{
         return this.physics.overlap(obj1, obj2);
     }
 
-    enemy_hit_wall() {
+    enemy_hit_wall(enemy, wall) {
         if (enemy && enemy.active) {
             const walls = [...enemy.light_walls.getChildren()];
             
