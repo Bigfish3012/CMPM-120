@@ -14,13 +14,15 @@ class player extends Phaser.GameObjects.Sprite{
         this.direction_left = false;
         this.direction_up = false;
         this.direction_down = false;
+
+        this.light_walls = scene.add.group();
+        this.pre_position = { x: this.x, y: this.y };
     }
     
     create(){
 
     }
     update(){
-        
         if (keyLEFT.isDown && !this.direction_right) {
             this.body.setVelocityX(-this.moveSpeed);
             this.body.setVelocityY(0);
@@ -65,6 +67,44 @@ class player extends Phaser.GameObjects.Sprite{
             this.direction_right = false;
             this.direction_left = false;
 
+        }
+
+        this.leave_light_wall();
+    }
+
+    leave_light_wall() {
+        let distance = Phaser.Math.Distance.Between(this.pre_position.x, this.pre_position.y, this.x, this.y);
+
+        if (distance > 5) {
+            let wallX = this.x;
+            let wallY = this.y;
+            
+            const offset = 60;  
+            if (this.direction_up) {
+                wallY += offset;  
+            } else if (this.direction_down) {
+                wallY -= offset;  
+            } else if (this.direction_left) {
+                wallX += offset;  
+            } else if (this.direction_right) {
+                wallX -= offset;  
+            }
+
+            let wall = this.scene.add.sprite(wallX, wallY, 'light_wall', 0);
+            wall.setOrigin(0.5);
+            this.light_walls.add(wall);
+            this.scene.physics.add.existing(wall);
+            wall.body.setImmovable(true);
+            wall.body.setAllowGravity(false);
+            wall.body.customSeparateX = true;
+            wall.body.customSeparateY = true;
+            
+            if (this.light_walls.getLength() > 60) {
+                let oldest_wall = this.light_walls.getFirstAlive();
+                if (oldest_wall) oldest_wall.destroy();
+            }
+            
+            this.pre_position = { x: this.x, y: this.y };
         }
     }
 }

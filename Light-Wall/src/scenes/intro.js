@@ -28,6 +28,7 @@ class intro extends Phaser.Scene{
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(cursors.space)) {
+            this.sound.play('click');
             this.scene.start("play_scene")
         }
     }
