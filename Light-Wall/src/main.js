@@ -1,7 +1,13 @@
 /*
 Name: Chengkun Li
 Game title: Light Wall
-Approximate hours spent on project:
+Approximate hours spent on project: infinite ~~~~~~~~~ tired
+
+
+
+
+References:
+粒子特效：                 https://www.youtube.com/watch?v=LEDPCfot_GY
 
 */
 
@@ -14,7 +20,7 @@ let config = {
     physics:{
         default: 'arcade',
         arcade:{
-            debug: false,
+            debug: true,
         }
     },
     scene: [menu, intro, play, game_over]

@@ -9,26 +9,28 @@ class enemy extends Phaser.GameObjects.Sprite{
         this.body.setImmovable(true);
         this.body.setCollideWorldBounds(true)
 
+        // initialize direction (0:up, 1:down, 2:left, 3:right)
         this.direction = Phaser.Math.Between(0, 3);
-        this.change_direction_time = Phaser.Math.Between(1000, 3000); 
-        this.last_change = 0;
-
+        
+        // store previous position for wall creation
         this.light_walls = scene.add.group();
         this.pre_position = { x: this.x, y: this.y };
+        
+        // map of opposite directions
         this.opposite_dir = {
-            0:1,
-            1:0,
-            2:3, 
-            3:2
+            0: 1,  // up -> down
+            1: 0,  // down -> up
+            2: 3,  // left -> right
+            3: 2   // right -> left
         }
+
+        // add world bounds collision detection
+        this.body.onWorldBounds = true;
+        scene.physics.world.on('worldbounds', this.check_world_collision, this);
     }
 
     update(time) {
-        if (time > this.last_change + this.change_direction_time) {
-            this.change_direction();
-            this.last_change = time;
-        }
-
+        // update movement based on current direction
         if (this.direction === 0) { 
             this.body.setVelocityY(-this.moveSpeed);
             this.anims.play('enemy_move_up', true);
@@ -50,40 +52,28 @@ class enemy extends Phaser.GameObjects.Sprite{
         this.leave_light_wall();
     }
 
-    change_direction() {
-        const forbidden_dir = { 0: 1, 1: 0, 2: 3, 3: 2 };
-        let allow_dir = [0, 1, 2, 3].filter(dir => dir !== forbidden_dir[this.direction]);
+    // handle collision with world bounds
+    check_world_collision(body, up, down, left, right) {
+        if (body.gameObject !== this) return;
         
-        const checkDistance = 100;
-        allow_dir = allow_dir.filter(dir => {
-            let testX = this.x;
-            let testY = this.y;
-            
-            switch(dir) {
-                case 0: testY -= checkDistance; break;
-                case 1: testY += checkDistance; break;
-                case 2: testX -= checkDistance; break;
-                case 3: testX += checkDistance; break;
-            }
-            
-            let hasWall = false;
-            this.light_walls.getChildren().forEach(wall => {
-                if (Phaser.Math.Distance.Between(testX, testY, wall.x, wall.y) < 50) {
-                    hasWall = true;
-                }
-            });
-            
-            return !hasWall;
-        });
-
-        if (allow_dir.length === 0) {
-            allow_dir = [0, 1, 2, 3].filter(dir => dir !== forbidden_dir[this.direction]);
+        // determine which boundary was hit and choose a new valid direction
+        let new_directions = [];
+        if (up && this.direction === 0) {
+            new_directions = [2, 3];  // can go left or right
+        } else if (down && this.direction === 1) {
+            new_directions = [2, 3];  // can go left or right
+        } else if (left && this.direction === 2) {
+            new_directions = [0, 1];  // can go up or down
+        } else if (right && this.direction === 3) {
+            new_directions = [0, 1];  // can go up or down
         }
-        
-        this.direction = allow_dir[Phaser.Math.Between(0, allow_dir.length-1)];
-        this.change_direction_time = Phaser.Math.Between(1000, 3000);
-        this.body.setVelocityX(0); 
-        this.body.setVelocityY(0);
+
+        if (new_directions.length > 0) {
+            // choose random direction from valid options
+            this.direction = new_directions[Phaser.Math.Between(0, new_directions.length - 1)];
+            // reset velocity before changing direction
+            this.body.setVelocity(0, 0);
+        }
     }
 
     leave_light_wall() {
@@ -126,5 +116,4 @@ class enemy extends Phaser.GameObjects.Sprite{
             this.pre_position = { x: this.x, y: this.y };
         }
     }
-
 }
