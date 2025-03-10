@@ -79,7 +79,7 @@ class player extends Phaser.GameObjects.Sprite{
             let wallX = this.x;
             let wallY = this.y;
             
-            const offset = 1;  
+            const offset = 5;  
             if (this.direction_up) {
                 wallY += offset;  
             } else if (this.direction_down) {

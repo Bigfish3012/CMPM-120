@@ -130,7 +130,7 @@ class enemy extends Phaser.GameObjects.Sprite{
             let wallX = this.x;
             let wallY = this.y;
             
-            const offset = 1;
+            const offset = 5;
             switch(this.direction) {
                 case 0: // up
                     wallY += offset;
