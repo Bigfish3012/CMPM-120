@@ -182,12 +182,12 @@ class game_over extends Phaser.Scene{
 
         //explosion anims, just for fun
         if (!this.anims.exists('explosion')){
-            const emitter = this.add.particles(400, 250, 'explosion', {
+            const emitter = this.add.particles('explosion', {
                 key: 'explosion',
                 frame:["explode0.png", "explode1.png", "explode2.png", "explode3.png", "explode4.png", "explode5.png", "explode6.png"],
-                lifespan: 500,
+                lifespan: 5000,
                 speed: { min: 150, max: 250 },
-                scale: { start: 1, end: 0 },
+                scale: { start: 3, end: 0 },
                 blendMode: 'ADD',
                 emitting: false
             });

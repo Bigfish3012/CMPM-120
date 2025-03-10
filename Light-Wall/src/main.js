@@ -1,14 +1,16 @@
 /*
 Name: Chengkun Li
 Game title: Light Wall
-Approximate hours spent on project: infinite ~~~~~~~~~ tired
+Approximate hours spent on project: I don't remember, maybe infinite hours ~~~~~~~~~ tired
 
 
 
 
 References:
-粒子特效：                 https://www.youtube.com/watch?v=LEDPCfot_GY
-
+Particle Effects:               https://www.youtube.com/watch?v=LEDPCfot_GY
+on_world_bounds:                https://stackoverflow.com/questions/74976420/phaser-3-check-group-collision-with-world-bounds
+bgm1 Voxel Revolution:          https://incompetech.com/music/royalty-free/musihttps://incompetech.com/music/royalty-free/music.htmlc.html
+bgm2 Pixel Bubbles:             https://pixabay.com/music/search/pixel/                
 */
 
 "use strict"
@@ -20,7 +22,7 @@ let config = {
     physics:{
         default: 'arcade',
         arcade:{
-            debug: true,
+            debug: false,
         }
     },
     scene: [menu, intro, play, game_over]
