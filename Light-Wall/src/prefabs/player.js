@@ -23,7 +23,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.body.setVelocityX(-this.moveSpeed);
             this.body.setVelocityY(0);
             this.anims.play('player_move_left', true);
-            this.body.setSize(20, 39);
+            this.body.setSize(10, 39);
             this.body.setOffset(0, 0);
 
             this.direction_left = true;
@@ -35,7 +35,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.body.setVelocityX(this.moveSpeed);
             this.body.setVelocityY(0);
             this.anims.play('player_move_right', true);
-            this.body.setSize(20, 39);
+            this.body.setSize(10, 39);
             this.body.setOffset(54, 0);
 
             this.direction_left = false;
@@ -47,7 +47,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.body.setVelocityY(-this.moveSpeed);
             this.body.setVelocityX(0);
             this.anims.play('player_move_up', true);
-            this.body.setSize(39, 20);
+            this.body.setSize(39, 10);
             this.body.setOffset(0, 0);
 
             this.direction_left = false;
@@ -59,7 +59,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.body.setVelocityY(this.moveSpeed);
             this.body.setVelocityX(0);
             this.anims.play('player_move_down', true);
-            this.body.setSize(39, 20);
+            this.body.setSize(39, 10);
             this.body.setOffset(0, 54);
 
             this.direction_left = false;

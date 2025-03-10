@@ -61,22 +61,22 @@ class enemy extends Phaser.GameObjects.Sprite{
         if (this.direction === 0) { 
             this.body.setVelocityY(-this.moveSpeed);
             this.anims.play('enemy_move_up', true);
-            this.body.setSize(39, 20);
+            this.body.setSize(39, 10);
             this.body.setOffset(0, 0);
         } else if (this.direction === 1) { 
             this.body.setVelocityY(this.moveSpeed);
             this.anims.play('enemy_move_down', true);
-            this.body.setSize(39, 20);
+            this.body.setSize(39, 10);
             this.body.setOffset(0, 54);
         } else if (this.direction === 2) { 
             this.body.setVelocityX(-this.moveSpeed);
             this.anims.play('enemy_move_left', true);
-            this.body.setSize(20, 39);
+            this.body.setSize(10, 39);
             this.body.setOffset(0, 0);
         } else if (this.direction === 3) { 
             this.body.setVelocityX(this.moveSpeed);
             this.anims.play('enemy_move_right', true);
-            this.body.setSize(20, 39);
+            this.body.setSize(10, 39);
             this.body.setOffset(54, 0);
         }
 
