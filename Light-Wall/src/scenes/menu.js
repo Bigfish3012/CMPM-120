@@ -5,15 +5,15 @@ class menu extends Phaser.Scene{
 
     preload(){
         this.load.path = "./assets/"
-        this.load.bitmapFont('dis_letter_brown', 'fonts/dis_letter_brown.png', 'fonts/dis_letter_brown.xml')
         this.load.bitmapFont('dis_letter_blue', 'fonts/dis_letter_blue.png', 'fonts/dis_letter_blue.xml')
-        this.load.bitmapFont('Cynatar', 'fonts/Cynatar.png', 'fonts/Cynatar.xml')
         this.load.bitmapFont('Cynatar_brown', 'fonts/Cynatar_brown.png', 'fonts/Cynatar_brown.xml')
         this.load.bitmapFont('intro_used', 'fonts/intro_used.png', 'fonts/intro_used.xml')
         this.load.bitmapFont('game_over', 'fonts/game_over.png', 'fonts/game_over.xml')
+        this.load.bitmapFont('white_letters', 'fonts/white_letters.png', 'fonts/white_letters.xml')
 
         this.load.audio('bgm', 'musics/background_music.mp3');
         this.load.audio('bgm2', 'musics/background_music2.mp3');
+        this.load.audio('game_over_music', 'musics/game_over.mp3');
         this.load.audio('click', 'musics/click.mp3');
         this.load.audio('explosion1', 'musics/explosion1.mp3', { volume: 0.5 });
         this.load.audio('explosion2', 'musics/explosion2.mp3', { volume: 0.5 });
@@ -120,7 +120,7 @@ class menu extends Phaser.Scene{
             const emitter = this.add.particles(400, 250, 'explosion', {
                 key: 'explosion',
                 frame:["explode0.png", "explode1.png", "explode2.png", "explode3.png", "explode4.png", "explode5.png", "explode6.png"],
-                lifespan: 500,
+                lifespan: 1000,
                 speed: { min: 150, max: 250 },
                 scale: { start: 1, end: 0 },
                 blendMode: 'ADD',
@@ -156,22 +156,30 @@ class game_over extends Phaser.Scene{
     }
 
     create(data){
+        // Add background music
+        if (!this.sound.get('game_over_music')) {
+            this.bg_music = this.sound.add('game_over_music', {
+                volume: 0.5,
+                loop: false
+            });
+            this.bg_music.play();
+        }
         key_start = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
 
         // Display different text based on game result
         if(data.is_hit_wall){
-            this.add.bitmapText(centerX, centerY, 'dis_letter_blue', "YOU HIT THE WALL", 50).setOrigin(0.5);   
+            this.add.bitmapText(centerX, centerY, 'white_letters', "YOU HIT THE WALL", 50).setOrigin(0.5);   
         }else if(data.is_hit_own_wall){
-            this.add.bitmapText(centerX, centerY, 'dis_letter_blue', "YOU HIT YOUR OWN WALL", 50).setOrigin(0.5);   
+            this.add.bitmapText(centerX, centerY, 'white_letters', "YOU HIT YOUR OWN WALL", 50).setOrigin(0.5);   
         }else if(data.time_up){
-            this.add.bitmapText(centerX, centerY, 'dis_letter_blue', "Time is up", 50).setOrigin(0.5);   
+            this.add.bitmapText(centerX, centerY, 'white_letters', "Time is up", 50).setOrigin(0.5);   
         }else if(data.is_win){
-            this.add.bitmapText(centerX, centerY, 'dis_letter_blue', "YOU WIN", 50).setOrigin(0.5);   
+            this.add.bitmapText(centerX, centerY, 'white_letters', "YOU WIN", 50).setOrigin(0.5);   
         }
         this.add.bitmapText(centerX, centerY - 200, 'game_over', "G A M E  O V E R", 150).setOrigin(0.5);  
 
-        let flash_text = this.add.bitmapText(centerX, centerY+300, 'dis_letter_blue', "Press [SPACE] to REstart\n\nPress [R] to go back to the main menu", 30).setOrigin(0.5);        
+        let flash_text = this.add.bitmapText(centerX, centerY+300, 'white_letters', "Press [SPACE] to REstart\nPress [R] to go back to the main menu", 30, 0.5).setOrigin(0.5);        
         this.tweens.add({
             targets: flash_text, 
             alpha: { from: 1, to: 0 },
@@ -182,12 +190,12 @@ class game_over extends Phaser.Scene{
 
         //explosion anims, just for fun
         if (!this.anims.exists('explosion')){
-            const emitter = this.add.particles('explosion', {
+            const emitter = this.add.particles(0, 0, 'explosion', {
                 key: 'explosion',
                 frame:["explode0.png", "explode1.png", "explode2.png", "explode3.png", "explode4.png", "explode5.png", "explode6.png"],
-                lifespan: 5000,
+                lifespan: 1000,
                 speed: { min: 150, max: 250 },
-                scale: { start: 3, end: 0 },
+                scale: { start: 2, end: 0 },
                 blendMode: 'ADD',
                 emitting: false
             });

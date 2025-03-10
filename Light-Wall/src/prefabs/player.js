@@ -8,7 +8,6 @@ class player extends Phaser.GameObjects.Sprite{
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);
         this.body.setCollideWorldBounds(true)
-        this.body.setVelocityX(0);
 
         this.direction_right = false;
         this.direction_left = false;
@@ -19,15 +18,13 @@ class player extends Phaser.GameObjects.Sprite{
         this.pre_position = { x: this.x, y: this.y };
     }
     
-    create(){
-
-    }
     update(){
         if (keyLEFT.isDown && !this.direction_right) {
             this.body.setVelocityX(-this.moveSpeed);
             this.body.setVelocityY(0);
             this.anims.play('player_move_left', true);
-            this.body.setSize(74, 39);
+            this.body.setSize(20, 39);
+            this.body.setOffset(0, 0);
 
             this.direction_left = true;
             this.direction_right = false;
@@ -38,7 +35,8 @@ class player extends Phaser.GameObjects.Sprite{
             this.body.setVelocityX(this.moveSpeed);
             this.body.setVelocityY(0);
             this.anims.play('player_move_right', true);
-            this.body.setSize(74, 39);
+            this.body.setSize(20, 39);
+            this.body.setOffset(54, 0);
 
             this.direction_left = false;
             this.direction_right = true;
@@ -49,23 +47,25 @@ class player extends Phaser.GameObjects.Sprite{
             this.body.setVelocityY(-this.moveSpeed);
             this.body.setVelocityX(0);
             this.anims.play('player_move_up', true);
-            this.body.setSize(39, 74);
+            this.body.setSize(39, 20);
+            this.body.setOffset(0, 0);
 
+            this.direction_left = false;
+            this.direction_right = false;
             this.direction_up = true;
             this.direction_down = false;
-            this.direction_right = false;
-            this.direction_left = false;
 
         }else if (keyDOWN.isDown && !this.direction_up) {
             this.body.setVelocityY(this.moveSpeed);
             this.body.setVelocityX(0);
-            this.anims.play('player_move_down',true);
-            this.body.setSize(39, 74);
+            this.anims.play('player_move_down', true);
+            this.body.setSize(39, 20);
+            this.body.setOffset(0, 54);
 
+            this.direction_left = false;
+            this.direction_right = false;
             this.direction_up = false;
             this.direction_down = true;
-            this.direction_right = false;
-            this.direction_left = false;
 
         }
 
@@ -75,11 +75,11 @@ class player extends Phaser.GameObjects.Sprite{
     leave_light_wall() {
         let distance = Phaser.Math.Distance.Between(this.pre_position.x, this.pre_position.y, this.x, this.y);
 
-        if (distance > 5) {
+        if (distance > 1) {
             let wallX = this.x;
             let wallY = this.y;
             
-            const offset = 60;  
+            const offset = 1;  
             if (this.direction_up) {
                 wallY += offset;  
             } else if (this.direction_down) {
@@ -92,6 +92,7 @@ class player extends Phaser.GameObjects.Sprite{
 
             let wall = this.scene.add.sprite(wallX, wallY, 'light_wall', 0);
             wall.setOrigin(0.5);
+            wall.setAlpha(0);
             this.light_walls.add(wall);
             this.scene.physics.add.existing(wall);
             wall.body.setImmovable(true);
@@ -99,7 +100,14 @@ class player extends Phaser.GameObjects.Sprite{
             wall.body.customSeparateX = true;
             wall.body.customSeparateY = true;
             
-            if (this.light_walls.getLength() > 60) {
+            this.scene.tweens.add({
+                targets: wall,
+                alpha: 1,
+                duration: 1000,
+                ease: 'Linear'
+            });
+            
+            if (this.light_walls.getLength() > 120) {
                 let oldest_wall = this.light_walls.getFirstAlive();
                 if (oldest_wall) oldest_wall.destroy();
             }

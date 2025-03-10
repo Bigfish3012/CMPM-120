@@ -219,8 +219,10 @@ class play extends Phaser.Scene{
     
             // Check if all enemies are destroyed
             if (this.enemies_remaining <= 0) {
-                this.sound.get('bgm2').stop();
-                this.scene.start("game_over_scene", { is_win: true });
+                this.time.delayedCall(1000, () => {
+                    this.sound.get('bgm2').stop();
+                    this.scene.start("game_over_scene", { is_win: true});
+                });
             }
         }
     }
@@ -233,9 +235,9 @@ class play extends Phaser.Scene{
         const emitter = this.add.particles(enemy.x, enemy.y, 'explosion', {
             key: 'explosion',
             frame:["explode0.png", "explode1.png", "explode2.png", "explode3.png", "explode4.png", "explode5.png", "explode6.png"],
-            lifespan: 500,
+            lifespan: 1000,
             speed: { min: 150, max: 250 },
-            scale: { start: 1, end: 0 },
+            scale: { start: 2, end: 0 },
             blendMode: 'ADD',
             emitting: false
         });
