@@ -15,8 +15,8 @@ class menu extends Phaser.Scene{
         this.load.audio('bgm2', 'musics/background_music2.mp3');
         this.load.audio('game_over_music', 'musics/game_over.mp3');
         this.load.audio('click', 'musics/click.mp3');
-        this.load.audio('explosion1', 'musics/explosion1.mp3', { volume: 0.5 });
-        this.load.audio('explosion2', 'musics/explosion2.mp3', { volume: 0.5 });
+        this.load.audio('explosion1', 'musics/explosion1.mp3');
+        this.load.audio('explosion2', 'musics/explosion2.mp3');
 
         this.load.spritesheet('brown_car', 'images/brown_car.png', {
             frameWidth: 74,
@@ -42,13 +42,12 @@ class menu extends Phaser.Scene{
 
     create(){
         // Add background music
-        if (!this.sound.get('bgm')) {
-            this.bg_music = this.sound.add('bgm', {
-                volume: 0.5,
-                loop: true
-            });
-            this.bg_music.play();
-        }
+        this.bg_music = this.sound.add('bgm', {
+            volume: 0.5,
+            loop: true
+        });
+        this.bg_music.play();
+
         this.add.bitmapText(centerX, centerY - 32, 'Cynatar_brown', 'L I G H T  W A L L', 100).setOrigin(0.5)
         let flash_text = this.add.bitmapText(centerX, centerY + 300, 'Cynatar_brown', "Press [SPACE] to start", 50).setOrigin(0.5);
         this.tweens.add({
@@ -157,13 +156,12 @@ class game_over extends Phaser.Scene{
 
     create(data){
         // Add background music
-        if (!this.sound.get('game_over_music')) {
-            this.bg_music = this.sound.add('game_over_music', {
-                volume: 0.5,
-                loop: false
-            });
-            this.bg_music.play();
-        }
+        this.sound.stopAll();
+        this.bg_music = this.sound.add('game_over_music', {
+            volume: 0.5,
+            loop: false
+        });
+        this.bg_music.play();
         key_start = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
 
@@ -215,15 +213,13 @@ class game_over extends Phaser.Scene{
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(key_start)){
+            this.sound.stopAll();
             this.sound.play('click');
-            this.sound.play('bgm2');
             this.scene.start('play_scene') 
         }
         if(Phaser.Input.Keyboard.JustDown(keyRESET)){
-            this.sound.get('bgm').stop();
+            this.sound.stopAll();
             this.sound.play('click');
-            this.sound.play('bgm');
-
             this.scene.start('menu_scene') 
         }
     }

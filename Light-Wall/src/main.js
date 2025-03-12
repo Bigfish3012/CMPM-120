@@ -6,13 +6,20 @@ Approximate hours spent on project: I don't remember, maybe infinite hours ~~~~~
 
 
 
-References:
+References / Credit / Source:
 Particle Effects:               https://www.youtube.com/watch?v=LEDPCfot_GY
 on_world_bounds:                https://stackoverflow.com/questions/74976420/phaser-3-check-group-collision-with-world-bounds
 setOffset:                      https://phaser.discourse.group/t/differences-between-setsize-setoffset-methods-in-arcade-static-body-and-dynamic-body/734
 bgm1 Voxel Revolution:          https://incompetech.com/music/royalty-free/musihttps://incompetech.com/music/royalty-free/music.htmlc.html
 bgm2 Pixel Bubbles:             https://pixabay.com/music/search/pixel/     
 bgm3 Game Over:                 https://pixabay.com/sound-effects/search/game-over/
+
+
+to-do-list
+make ai better, not killing itself
+a hard mode
+Available colors
+
 */
 
 "use strict"

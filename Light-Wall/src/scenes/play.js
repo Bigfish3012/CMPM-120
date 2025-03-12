@@ -12,6 +12,13 @@ class play extends Phaser.Scene{
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.map = this.add.image(0,0, 'map').setOrigin(0)
 
+        // 总是创建新的背景音乐实例
+        this.bg_music = this.sound.add('bgm2', {
+            volume: 0.5,
+            loop: true
+        });
+        this.bg_music.play();
+
         this.player = new player (this, centerX + 100, centerY + 100, "blue_car", 0)
 
         // Spawn enemies in four corners
@@ -140,8 +147,10 @@ class play extends Phaser.Scene{
     
             // Check if all enemies are destroyed
             if (this.enemies_remaining <= 0) {
-                this.sound.get('bgm2').stop();
-                this.scene.start("game_over_scene", { is_win: true });
+                this.sound.stopAll();
+                this.time.delayedCall(1000, () => {
+                    this.scene.start("game_over_scene", { is_win: true });
+                });
             }
         }
     }
@@ -154,8 +163,9 @@ class play extends Phaser.Scene{
         this.car_explode(this.player, true);
         
         // Wait for explosion animation to complete
+
         this.time.delayedCall(1000, () => {
-            this.sound.get('bgm2').stop();
+            this.sound.stopAll();
             this.scene.start("game_over_scene", { is_win: false, is_hit_wall: true});
         });
     }
@@ -169,7 +179,7 @@ class play extends Phaser.Scene{
         
         // Wait for explosion animation to complete
         this.time.delayedCall(1000, () => {
-            this.sound.get('bgm2').stop();
+            this.sound.stopAll();
             this.scene.start("game_over_scene", { is_win: false, is_hit_own_wall: true});
         });
     }
@@ -179,7 +189,7 @@ class play extends Phaser.Scene{
             this.time_remaining --;
             this.timer_text.setText(`Time: ${Math.ceil(this.time_remaining)}`);             
             if (this.time_remaining <= 0) {            
-                this.sound.get('bgm2').stop();
+                this.sound.stopAll();
                 this.scene.start("game_over_scene", { is_win: false, time_up: true });
             }
         }
@@ -220,7 +230,7 @@ class play extends Phaser.Scene{
             // Check if all enemies are destroyed
             if (this.enemies_remaining <= 0) {
                 this.time.delayedCall(1000, () => {
-                    this.sound.get('bgm2').stop();
+                    this.sound.stopAll();
                     this.scene.start("game_over_scene", { is_win: true});
                 });
             }
@@ -230,7 +240,7 @@ class play extends Phaser.Scene{
     car_explode(enemy){
         const exp_sounds =  ['explosion1', 'explosion2'];
         const random_sounds = Phaser.Math.RND.pick(exp_sounds);  
-        this.sound.play(random_sounds);
+        this.sound.play(random_sounds, { volume: 0.3 });
 
         const emitter = this.add.particles(enemy.x, enemy.y, 'explosion', {
             key: 'explosion',

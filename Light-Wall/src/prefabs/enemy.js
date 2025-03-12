@@ -4,7 +4,7 @@ class enemy extends Phaser.GameObjects.Sprite{
         scene.add.existing(this) 
         scene.physics.add.existing(this) 
 
-        this.moveSpeed = 300
+        this.moveSpeed = 500
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);
         this.body.setCollideWorldBounds(true)
