@@ -4,20 +4,21 @@ class enemy extends Phaser.GameObjects.Sprite{
         scene.add.existing(this) 
         scene.physics.add.existing(this) 
 
+        // Set basic physics properties
         this.moveSpeed = 500
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);
         this.body.setCollideWorldBounds(true)
         this.body.onWorldBounds = true;  // enable world bounds collision event
 
-        // initialize direction (0:up, 1:down, 2:left, 3:right)
+        // Initialize direction (0:up, 1:down, 2:left, 3:right)
         this.direction = Phaser.Math.Between(0, 3);
         
-        // store previous position for wall creation
+        // Create group for light walls and store initial position
         this.light_walls = scene.add.group();
         this.pre_position = { x: this.x, y: this.y };
         
-        // map of opposite directions
+        // Define direction mapping for opposite directions
         this.opposite_dir = {
             0: 1,  // up -> down
             1: 0,  // down -> up
@@ -25,19 +26,20 @@ class enemy extends Phaser.GameObjects.Sprite{
             3: 2   // right -> left
         }
 
-        // add random direction change timer
+        // Setup random direction change timer
         this.last_direction_change = 0;
         this.direction_change_interval = Phaser.Math.Between(3000, 6000);  // random interval between 3-6 seconds
 
-        // setup world bounds collision handler
+        // Setup collision handler for world boundaries
         scene.physics.world.on('worldbounds', this.check_world_collision, this);
     }
 
+    // Handle collision with world boundaries
     check_world_collision(body) {
-        // make sure this is our body that hit the bounds
+        // Ensure collision is for this enemy
         if (body.gameObject !== this) return;
 
-        // determine which boundary was hit based on position and velocity
+        // Change direction based on which boundary was hit
         if (this.y <= 0 && this.body.velocity.y < 0) {  // hitting top
             this.change_direction_at_boundary('vertical');
         } else if (this.y >= this.scene.game.config.height - this.body.height && this.body.velocity.y > 0) {  // hitting bottom
@@ -49,15 +51,16 @@ class enemy extends Phaser.GameObjects.Sprite{
         }
     }
 
+    // Main update loop for enemy behavior
     update(time) {
-        // random direction change
+        // Check if it's time to change direction randomly
         if (time > this.last_direction_change + this.direction_change_interval) {
             this.random_dir();
             this.last_direction_change = time;
             this.direction_change_interval = Phaser.Math.Between(2000, 3000);  // set new random interval
         }
 
-        // update movement based on current direction
+        // Update movement and animation based on current direction
         if (this.direction === 0) { 
             this.body.setVelocityY(-this.moveSpeed);
             this.anims.play('enemy_move_up', true);
@@ -80,10 +83,11 @@ class enemy extends Phaser.GameObjects.Sprite{
             this.body.setOffset(54, 0);
         }
 
+        // Create light wall trail
         this.leave_light_wall();
     }
 
-    // change direction when hitting boundaries
+    // Change direction when hitting world boundaries
     change_direction_at_boundary(boundary_type) {
         if (boundary_type === 'vertical') {
             this.direction = [2, 3][Phaser.Math.Between(0, 1)];  // choose left or right
@@ -93,16 +97,16 @@ class enemy extends Phaser.GameObjects.Sprite{
         this.body.setVelocity(0, 0);  // reset velocity before changing direction
     }
 
-    // change direction randomly but smartly
+    // Intelligently choose a new random direction
     random_dir() {
         let available_directions = [0, 1, 2, 3];
         
-        // remove current direction and its opposite
+        // Remove current direction and its opposite to prevent backtracking
         available_directions = available_directions.filter(dir => 
             dir !== this.direction && dir !== this.opposite_dir[this.direction]
         );
 
-        // check if near boundaries and remove those directions
+        // Remove directions that would lead to boundaries
         if (this.y <= this.body.height) {  // near top
             available_directions = available_directions.filter(dir => dir !== 0);
         }
@@ -116,13 +120,14 @@ class enemy extends Phaser.GameObjects.Sprite{
             available_directions = available_directions.filter(dir => dir !== 3);
         }
 
-        // if we have valid directions, choose one randomly
+        // Choose random direction from remaining valid options
         if (available_directions.length > 0) {
             this.direction = available_directions[Phaser.Math.Between(0, available_directions.length - 1)];
             this.body.setVelocity(0, 0);  // reset velocity before changing direction
         }
     }
 
+    // Create light wall trail behind enemy
     leave_light_wall() {
         let distance = Phaser.Math.Distance.Between(this.pre_position.x, this.pre_position.y, this.x, this.y);
 
@@ -130,6 +135,7 @@ class enemy extends Phaser.GameObjects.Sprite{
             let wallX = this.x;
             let wallY = this.y;
             
+            // Adjust wall position based on movement direction
             const offset = 5;
             switch(this.direction) {
                 case 0: // up
@@ -146,6 +152,7 @@ class enemy extends Phaser.GameObjects.Sprite{
                     break;
             }
 
+            // Create and configure light wall sprite
             let wall = this.scene.add.sprite(wallX, wallY, 'light_wall', 1);
             wall.setOrigin(0.5);
             wall.setAlpha(0);
@@ -156,6 +163,7 @@ class enemy extends Phaser.GameObjects.Sprite{
             wall.body.customSeparateX = true;
             wall.body.customSeparateY = true;
             
+            // Fade in the light wall
             this.scene.tweens.add({
                 targets: wall,
                 alpha: 1,
@@ -163,11 +171,13 @@ class enemy extends Phaser.GameObjects.Sprite{
                 ease: 'Linear'
             });
             
+            // Limit the number of light walls to prevent memory issues
             if (this.light_walls.getLength() > 120) {
                 let oldest_wall = this.light_walls.getFirstAlive();
                 if (oldest_wall) oldest_wall.destroy();
             }
             
+            // Update previous position for next wall placement
             this.pre_position = { x: this.x, y: this.y };
         }
     }

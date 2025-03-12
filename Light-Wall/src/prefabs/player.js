@@ -4,21 +4,25 @@ class player extends Phaser.GameObjects.Sprite{
         scene.add.existing(this) 
         scene.physics.add.existing(this) 
 
+        // Set basic physics properties
         this.moveSpeed = 500
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);
         this.body.setCollideWorldBounds(true)
 
+        // Initialize movement direction flags
         this.direction_right = false;
         this.direction_left = false;
         this.direction_up = false;
         this.direction_down = false;
 
+        // Create group for light walls and store initial position
         this.light_walls = scene.add.group();
         this.pre_position = { x: this.x, y: this.y };
     }
     
     update(){
+        // Handle left movement
         if (keyLEFT.isDown && !this.direction_right) {
             this.body.setVelocityX(-this.moveSpeed);
             this.body.setVelocityY(0);
@@ -31,6 +35,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.direction_up = false;
             this.direction_down = false;
 
+        // Handle right movement
         }else if (keyRIGHT.isDown && !this.direction_left) {
             this.body.setVelocityX(this.moveSpeed);
             this.body.setVelocityY(0);
@@ -43,6 +48,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.direction_up = false;
             this.direction_down = false;
 
+        // Handle upward movement
         }else if (keyUP.isDown && !this.direction_down) {
             this.body.setVelocityY(-this.moveSpeed);
             this.body.setVelocityX(0);
@@ -55,6 +61,7 @@ class player extends Phaser.GameObjects.Sprite{
             this.direction_up = true;
             this.direction_down = false;
 
+        // Handle downward movement
         }else if (keyDOWN.isDown && !this.direction_up) {
             this.body.setVelocityY(this.moveSpeed);
             this.body.setVelocityX(0);
@@ -66,12 +73,13 @@ class player extends Phaser.GameObjects.Sprite{
             this.direction_right = false;
             this.direction_up = false;
             this.direction_down = true;
-
         }
 
+        // Create light wall trail
         this.leave_light_wall();
     }
 
+    // Create light wall trail behind player
     leave_light_wall() {
         let distance = Phaser.Math.Distance.Between(this.pre_position.x, this.pre_position.y, this.x, this.y);
 
@@ -79,6 +87,7 @@ class player extends Phaser.GameObjects.Sprite{
             let wallX = this.x;
             let wallY = this.y;
             
+            // Adjust wall position based on movement direction
             const offset = 5;  
             if (this.direction_up) {
                 wallY += offset;  
@@ -90,6 +99,7 @@ class player extends Phaser.GameObjects.Sprite{
                 wallX -= offset;  
             }
 
+            // Create and configure light wall sprite
             let wall = this.scene.add.sprite(wallX, wallY, 'light_wall', 0);
             wall.setOrigin(0.5);
             wall.setAlpha(0);
@@ -100,6 +110,7 @@ class player extends Phaser.GameObjects.Sprite{
             wall.body.customSeparateX = true;
             wall.body.customSeparateY = true;
             
+            // Fade in the light wall
             this.scene.tweens.add({
                 targets: wall,
                 alpha: 1,
@@ -107,11 +118,13 @@ class player extends Phaser.GameObjects.Sprite{
                 ease: 'Linear'
             });
             
+            // Limit the number of light walls to prevent memory issues
             if (this.light_walls.getLength() > 120) {
                 let oldest_wall = this.light_walls.getFirstAlive();
                 if (oldest_wall) oldest_wall.destroy();
             }
             
+            // Update previous position for next wall placement
             this.pre_position = { x: this.x, y: this.y };
         }
     }
