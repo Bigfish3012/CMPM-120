@@ -6,11 +6,11 @@ class intro extends Phaser.Scene{
     create(){
         this.add.bitmapText(centerX, centerY - 200, 'intro_used', 'HOW TO PLAY', 70).setOrigin(0.5)
         this.add.bitmapText(centerX, centerY, 'intro_used',
-            "1. You can use 'WASD' to control the vehicle.\n\n" +
-            "2. You need to defeat the enemy within the specified time.\n\n" +
-            "3. If the specified time is exceeded, everyone present will be destroyed.\n\n"+
-            "4. You need to use the light wall you create to destroy the enemy\n\n"+
-            "5. You will also be destroyed by the light wall that you create.",
+            "1. Use 'WASD' to steer your vehicle.\n\n" +
+            "2. Defeat the enemy before time runs out.\n\n" +
+            "3. If time expires, the game ends.\n\n" +
+            "4. Trap and destroy your enemy with your light wall.\n\n" +
+            "5. Avoid crashing into your own light wall.",
             30
         ).setOrigin(0.5);
 

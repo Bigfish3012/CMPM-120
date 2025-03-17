@@ -11,7 +11,7 @@ class play extends Phaser.Scene{
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-        this.map = this.add.image(0,0, 'map').setOrigin(0).setScale(2);
+        this.map = this.add.image(0,0, 'map').setOrigin(0);
 
         // Create and play background music
         this.bg_music = this.sound.add('bgm2', {
@@ -23,34 +23,17 @@ class play extends Phaser.Scene{
         // Create player at center of screen
         this.player = new player (this, centerX + 100, centerY + 100, "blue_car", 0)
 
-        // Spawn enemies with random positions
+        // Initialize enemy array
         this.enemies = [];
-        for (let i = 0; i < 7; i++) {
-            let x = Phaser.Math.Between(100, this.map.displayWidth - 100);
-            let y = Phaser.Math.Between(100, this.map.displayHeight - 100);
-            this.enemies.push(new enemy(this, x, y, "brown_car", 0));
-        }
-        
-        // Setup all collision detection between players, enemies, and light walls
-        this.enemies.forEach(enemy => {
-            // Direct collision between player and enemy
-            this.physics.add.collider(this.player, enemy, this.check_collision, null, this);
-            
-            // Enemy colliding with player's light wall
-            this.physics.add.collider(enemy, this.player.light_walls, this.enemy_hit_wall, null, this);
-            
-            // Player colliding with enemy's light wall
-            this.physics.add.collider(this.player, enemy.light_walls, this.player_hit_wall, null, this);
+        this.maxEnemies = 7; // Maximum number of enemies
+        this.enemiesSpawned = 0; // Number of enemies spawned
 
-            // Enemy colliding with its own light wall
-            this.physics.add.collider(enemy, enemy.light_walls, this.enemy_hit_own_wall, null, this);
-
-            // Enemy colliding with other enemies' light walls
-            this.enemies.forEach(other_enemy => {
-                if (enemy !== other_enemy) {
-                    this.physics.add.collider(enemy, other_enemy.light_walls, this.enemy_hit_wall, null, this);
-                }
-            });
+        // Create enemy spawn timer, generates one enemy per second
+        this.enemySpawnTimer = this.time.addEvent({
+            delay: 1000, // 1 second interval
+            callback: this.spawnEnemy,
+            callbackScope: this,
+            loop: true
         });
 
         // Player colliding with their own light wall
@@ -135,14 +118,6 @@ class play extends Phaser.Scene{
             });
             
             this.car_explode(enemy);
-    
-            // Check for win condition
-            if (this.enemies_remaining <= 0) {
-                this.time.delayedCall(1000, () => {
-                    this.sound.stopAll();
-                    this.scene.start("game_over_scene", { is_win: true });
-                });
-            }
         }
     }
 
@@ -212,14 +187,6 @@ class play extends Phaser.Scene{
             });
             
             this.car_explode(enemy);
-    
-            // Check for win condition
-            if (this.enemies_remaining <= 0) {
-                this.time.delayedCall(1000, () => {
-                    this.sound.stopAll();
-                    this.scene.start("game_over_scene", { is_win: true});
-                });
-            }
         }
     }
     
@@ -241,10 +208,70 @@ class play extends Phaser.Scene{
             emitting: false
         });
         emitter.explode(200);
+        
+        // Remove enemy from the enemies array
+        const enemyIndex = this.enemies.indexOf(enemy);
+        if (enemyIndex !== -1) {
+            this.enemies.splice(enemyIndex, 1);
+        }
+        
         enemy.destroy();
 
         // Update enemy counter and display
         this.enemies_remaining--;
         this.enemy_text.setText(`Enemies: ${this.enemies_remaining}`);
+        
+        // Check for win condition - make sure both count and actual array are empty
+        if (this.enemies_remaining <= 0 || this.enemies.length === 0) {
+            this.time.delayedCall(1000, () => {
+                this.sound.stopAll();
+                this.scene.start("game_over_scene", { is_win: true });
+            });
+        }
+    }
+
+    // Method to spawn a new enemy
+    spawnEnemy() {
+        if (this.enemiesSpawned < this.maxEnemies) {
+            let x = Phaser.Math.Between(100, this.map.displayWidth - 100);
+            let y = Phaser.Math.Between(100, this.map.displayHeight - 100);
+            let newEnemy = new enemy(this, x, y, "brown_car");
+            this.enemies.push(newEnemy);
+            this.enemiesSpawned++;
+            
+            // Add collision detection for newly spawned enemy
+            this.setupEnemyCollision(newEnemy);
+            
+            // Update enemy counter display
+            this.enemies_remaining = this.enemies.length;
+            this.enemy_text.setText(`Enemies: ${this.enemies_remaining}`);
+            
+            // If all enemies have been spawned, stop the timer
+            if (this.enemiesSpawned >= this.maxEnemies) {
+                this.enemySpawnTimer.remove();
+            }
+        }
+    }
+
+    // Setup collision detection for enemy
+    setupEnemyCollision(enemy) {
+        // Direct collision between player and enemy
+        this.physics.add.collider(this.player, enemy, this.check_collision, null, this);
+        
+        // Enemy colliding with player's light wall
+        this.physics.add.collider(enemy, this.player.light_walls, this.enemy_hit_wall, null, this);
+        
+        // Player colliding with enemy's light wall
+        this.physics.add.collider(this.player, enemy.light_walls, this.player_hit_wall, null, this);
+
+        // Enemy colliding with its own light wall
+        this.physics.add.collider(enemy, enemy.light_walls, this.enemy_hit_own_wall, null, this);
+
+        // Enemy colliding with other enemies' light walls
+        this.enemies.forEach(other_enemy => {
+            if (enemy !== other_enemy) {
+                this.physics.add.collider(enemy, other_enemy.light_walls, this.enemy_hit_wall, null, this);
+            }
+        });
     }
 }

@@ -52,6 +52,10 @@ class menu extends Phaser.Scene{
         });
         this.bg_music.play();
 
+        // Add player and enemy vehicle image
+        this.add.image(350, 200, "blue_car").setOrigin(0.5).setScale(3);
+        this.add.image(game.config.width - 350, 200, "brown_car").setOrigin(0.5).setScale(3).setFlipX(true);
+        
         // Create title and flashing start text
         this.add.bitmapText(centerX, centerY - 32, 'Cynatar_brown', 'L I G H T  W A L L', 100).setOrigin(0.5)
         let flash_text = this.add.bitmapText(centerX, centerY + 300, 'Cynatar_brown', "Press [SPACE] to start", 50).setOrigin(0.5);
@@ -166,7 +170,7 @@ class game_over extends Phaser.Scene{
         // Stop all previous sounds and play game over music
         this.sound.stopAll();
         this.bg_music = this.sound.add('game_over_music', {
-            volume: 0.5,
+            volume: 0.2,
             loop: false
         });
         this.bg_music.play();
@@ -181,7 +185,7 @@ class game_over extends Phaser.Scene{
         }else if(data.is_hit_own_wall){
             this.add.bitmapText(centerX, centerY, 'white_letters', "YOU HIT YOUR OWN WALL", 50).setOrigin(0.5);   
         }else if(data.time_up){
-            this.add.bitmapText(centerX, centerY, 'white_letters', "Time is up", 50).setOrigin(0.5);   
+            this.add.bitmapText(centerX, centerY, 'white_letters', "TIME IS UP", 50).setOrigin(0.5);   
         }else if(data.is_win){
             this.add.bitmapText(centerX, centerY, 'white_letters', "YOU WIN", 50).setOrigin(0.5);   
         }
