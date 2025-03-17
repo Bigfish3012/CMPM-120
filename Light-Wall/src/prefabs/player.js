@@ -119,7 +119,7 @@ class player extends Phaser.GameObjects.Sprite{
             });
             
             // Limit the number of light walls to prevent memory issues
-            if (this.light_walls.getLength() > 120) {
+            if (this.light_walls.getLength() > 80) {
                 let oldest_wall = this.light_walls.getFirstAlive();
                 if (oldest_wall) oldest_wall.destroy();
             }

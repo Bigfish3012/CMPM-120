@@ -28,7 +28,8 @@ class enemy extends Phaser.GameObjects.Sprite{
 
         // Setup random direction change timer
         this.last_direction_change = 0;
-        this.direction_change_interval = Phaser.Math.Between(3000, 6000);  // random interval between 3-6 seconds
+        this.direction_change_interval = Phaser.Math.Between(1000, 2000);  // random interval between 1-2 seconds
+            this.last_light_wall_avoid_time = 0;
 
         // Setup collision handler for world boundaries
         scene.physics.world.on('worldbounds', this.check_world_collision, this);
@@ -57,7 +58,7 @@ class enemy extends Phaser.GameObjects.Sprite{
         if (time > this.last_direction_change + this.direction_change_interval) {
             this.random_dir();
             this.last_direction_change = time;
-            this.direction_change_interval = Phaser.Math.Between(2000, 3000);  // set new random interval
+            this.direction_change_interval = Phaser.Math.Between(1000, 2000);  // set new random interval
         }
 
         // Update movement and animation based on current direction
@@ -172,7 +173,7 @@ class enemy extends Phaser.GameObjects.Sprite{
             });
             
             // Limit the number of light walls to prevent memory issues
-            if (this.light_walls.getLength() > 120) {
+            if (this.light_walls.getLength() > 80) {
                 let oldest_wall = this.light_walls.getFirstAlive();
                 if (oldest_wall) oldest_wall.destroy();
             }

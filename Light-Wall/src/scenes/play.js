@@ -11,11 +11,11 @@ class play extends Phaser.Scene{
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-        this.map = this.add.image(0,0, 'map').setOrigin(0)
+        this.map = this.add.image(0,0, 'map').setOrigin(0).setScale(2);
 
         // Create and play background music
         this.bg_music = this.sound.add('bgm2', {
-            volume: 0.5,
+            volume: 0.2,
             loop: true
         });
         this.bg_music.play();
@@ -23,28 +23,13 @@ class play extends Phaser.Scene{
         // Create player at center of screen
         this.player = new player (this, centerX + 100, centerY + 100, "blue_car", 0)
 
-        // Spawn enemies in four corners with random positions
-        this.enemy1 = new enemy (this, 
-            Phaser.Math.Between(100, this.map.width/3), 
-            Phaser.Math.Between(100, this.map.height/3), 
-            "brown_car", 0);
-
-        this.enemy2 = new enemy (this, 
-            Phaser.Math.Between(this.map.width*2/3, this.map.width-100), 
-            Phaser.Math.Between(100, this.map.height/3), 
-            "brown_car", 0);
-
-        this.enemy3 = new enemy (this, 
-            Phaser.Math.Between(100, this.map.width/3), 
-            Phaser.Math.Between(this.map.height*2/3, this.map.height-100), 
-            "brown_car", 0);
-
-        this.enemy4 = new enemy (this, 
-            Phaser.Math.Between(this.map.width*2/3, this.map.width-100), 
-            Phaser.Math.Between(this.map.height*2/3, this.map.height-100), 
-            "brown_car", 0);
-
-        this.enemies = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
+        // Spawn enemies with random positions
+        this.enemies = [];
+        for (let i = 0; i < 7; i++) {
+            let x = Phaser.Math.Between(100, this.map.displayWidth - 100);
+            let y = Phaser.Math.Between(100, this.map.displayHeight - 100);
+            this.enemies.push(new enemy(this, x, y, "brown_car", 0));
+        }
         
         // Setup all collision detection between players, enemies, and light walls
         this.enemies.forEach(enemy => {
@@ -72,9 +57,10 @@ class play extends Phaser.Scene{
         this.physics.add.collider(this.player, this.player.light_walls, this.player_hit_own_wall, null, this);
 
         // Setup camera to follow player
-        this.cameras.main.setBounds(0, 0, this.map.width, this.map.height)
         this.cameras.main.startFollow(this.player, true, 0.1, 0.1)
-        this.physics.world.setBounds(0, 0, this.map.width, this.map.height)
+        this.cameras.main.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+        this.physics.world.setBounds(0, 0, this.map.displayWidth, this.map.displayHeight);
+
         
         // Initialize game timer
         this.left_time = 60000;  // 60 seconds in milliseconds
@@ -242,7 +228,7 @@ class play extends Phaser.Scene{
         // Play random explosion sound
         const exp_sounds =  ['explosion1', 'explosion2'];
         const random_sounds = Phaser.Math.RND.pick(exp_sounds);  
-        this.sound.play(random_sounds, { volume: 0.3 });
+        this.sound.play(random_sounds, { volume: 0.2 });
 
         // Create particle explosion effect
         const emitter = this.add.particles(enemy.x, enemy.y, 'explosion', {
