@@ -16,21 +16,52 @@ class intro extends Phaser.Scene{
 
         cursors = this.input.keyboard.createCursorKeys()
 
-        let flashText = this.add.bitmapText(centerX, centerY + 300, 'intro_used', "Press [SPACE] to start", 50).setOrigin(0.5);
+        // Create start button
+        let startButton = this.add.bitmapText(centerX, centerY + 300, 'intro_used', "CONTINUE", 50).setOrigin(0.5);
+        startButton.setInteractive({ useHandCursor: true });
+        
+        // Add hover effects
+        startButton.on('pointerover', () => {
+            startButton.setTint(0x00ff00); // Green tint on hover
+        });
+        
+        startButton.on('pointerout', () => {
+            startButton.clearTint();
+        });
+        
+        // Add click handler
+        startButton.on('pointerdown', () => {
+            this.sound.play('click');
+            this.sound.stopAll();
+            this.scene.start("play_scene");
+        });
+
+        let menuButton = this.add.bitmapText(centerX, centerY + 350, 'intro_used', "BACK", 50).setOrigin(0.5);
+        menuButton.setInteractive({ useHandCursor: true });
+        
+        // Add hover effects
+        menuButton.on('pointerover', () => {
+            menuButton.setTint(0x00ff00); // Green tint on hover
+        });
+        
+        menuButton.on('pointerout', () => {
+            menuButton.clearTint();
+        });
+        
+        // Add click handler
+        menuButton.on('pointerdown', () => {
+            this.sound.play('click');
+            this.sound.stopAll();
+            this.scene.start("menu_scene");
+        });
+        
+        // Add button animation
         this.tweens.add({
-            targets: flashText, 
-            alpha: { from: 1, to: 0 },
-            duration: 2000, 
+            targets: [startButton, menuButton], 
+            scale: { from: 1, to: 1.1 },
+            duration: 1000, 
             yoyo: true, 
             repeat: -1 
         });
-    }
-
-    update(){
-        if(Phaser.Input.Keyboard.JustDown(cursors.space)) {
-            this.sound.play('click');
-            this.sound.stopAll();
-            this.scene.start("play_scene")
-        }
     }
 }

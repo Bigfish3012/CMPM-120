@@ -58,14 +58,45 @@ class menu extends Phaser.Scene{
         
         // Create title and flashing start text
         this.add.bitmapText(centerX, centerY - 32, 'Cynatar_brown', 'L I G H T  W A L L', 100).setOrigin(0.5)
-        let flash_text = this.add.bitmapText(centerX, centerY + 300, 'Cynatar_brown', "Press [SPACE] to start", 50).setOrigin(0.5);
+        
+        // Create Start Button instead of just text
+        let startButton = this.add.bitmapText(centerX, centerY + 300, 'Cynatar_brown', "START GAME", 50).setOrigin(0.5);
+        startButton.setInteractive({ useHandCursor: true });
+        startButton.on('pointerover', () => {
+            startButton.setTint(0xffff00);
+        });
+        startButton.on('pointerout', () => {
+            startButton.clearTint();
+        });
+        startButton.on('pointerdown', () => {
+            this.sound.play('click');
+            this.scene.start("intro_scene");
+        });
+
+
+        // Add credits button
+        let creditsButton = this.add.bitmapText(centerX, centerY + 350, 'Cynatar_brown', "Credits", 50).setOrigin(0.5);
+        creditsButton.setInteractive({ useHandCursor: true });
+        creditsButton.on('pointerover', () => {
+            creditsButton.setTint(0xffff00); // Yellow tint on hover
+        });
+        creditsButton.on('pointerout', () => {
+            creditsButton.clearTint();
+        });
+        creditsButton.on('pointerdown', () => {
+            this.sound.play('click');
+            this.scene.start("credits_scene");
+        });
+
+        // Add button animation
         this.tweens.add({
-            targets: flash_text, 
-            alpha: { from: 1, to: 0 },
-            duration: 2000, 
+            targets: [startButton, creditsButton],
+            scale: { from: 1, to: 1.1 },
+            duration: 1000, 
             yoyo: true, 
             repeat: -1 
         });
+
 
         // Setup input controls
         cursors = this.input.keyboard.createCursorKeys()
@@ -151,14 +182,6 @@ class menu extends Phaser.Scene{
             });
         }
     }
-
-    // Handle scene transition on space key press
-    update(){
-        if(Phaser.Input.Keyboard.JustDown(cursors.space)) {
-            this.sound.play('click');
-            this.scene.start("intro_scene")
-        }
-    }
 }
 
 class game_over extends Phaser.Scene{
@@ -192,15 +215,54 @@ class game_over extends Phaser.Scene{
 
         // Display game over title and restart instructions
         this.add.bitmapText(centerX, centerY - 200, 'game_over', "G A M E  O V E R", 150).setOrigin(0.5);  
-        let flash_text = this.add.bitmapText(centerX, centerY+300, 'white_letters', "Press [SPACE] to REstart\nPress [R] to go back to the main menu", 30, 0.5).setOrigin(0.5);        
-        this.tweens.add({
-            targets: flash_text, 
-            alpha: { from: 1, to: 0 },
-            duration: 3000, 
-            yoyo: true, 
-            repeat: -1 
+        
+        // Create restart button
+        let restartButton = this.add.bitmapText(centerX, centerY + 280, 'white_letters', "RESTART GAME", 40).setOrigin(0.5);
+        restartButton.setInteractive({ useHandCursor: true });
+        
+        // Add hover effects for restart button
+        restartButton.on('pointerover', () => {
+            restartButton.setTint(0x00ff00); // Green tint on hover
+        });
+        
+        restartButton.on('pointerout', () => {
+            restartButton.clearTint();
+        });
+        
+        // Add click handler for restart button
+        restartButton.on('pointerdown', () => {
+            this.sound.stopAll();
+            this.sound.play('click');
+            this.scene.start('play_scene');
+        });
+        
+        // Create main menu button
+        let menuButton = this.add.bitmapText(centerX, centerY + 340, 'white_letters', "MAIN MENU", 40).setOrigin(0.5);
+        menuButton.setInteractive({ useHandCursor: true });
+        
+        // Add hover effects for menu button
+        menuButton.on('pointerover', () => {
+            menuButton.setTint(0x00ffff); // Cyan tint on hover
+        });
+        
+        menuButton.on('pointerout', () => {
+            menuButton.clearTint();
+        });
+        
+        // Add click handler for menu button
+        menuButton.on('pointerdown', () => {
+            this.sound.stopAll();
+            this.sound.play('click');
+            this.scene.start('menu_scene');
         });
 
+        this.tweens.add({
+            targets: [restartButton, menuButton],
+            scale: { from: 1, to: 1.1 },
+            duration: 1000,
+            yoyo: true,
+            repeat: -1
+        });
         //explosion anims, just for fun
         if (!this.anims.exists('explosion')){
             const emitter = this.add.particles(0, 0, 'explosion', {
@@ -226,19 +288,57 @@ class game_over extends Phaser.Scene{
             });
         }
     }
+}
+class credits extends Phaser.Scene {
+    constructor() {
+        super('credits_scene');
+    }
 
-    update(){
-        // Restart game on space key press
-        if(Phaser.Input.Keyboard.JustDown(key_start)){
-            this.sound.stopAll();
+    create() {
+        // Display title and credits information
+        this.add.bitmapText(centerX, centerY - 300, 'intro_used', "CREDITS", 100).setOrigin(0.5);
+        let creditsText = 
+            "Game made by: Chengkun Li\n" +
+            "Inspired by: Tron: Legacy\n" +
+            "Course: Winter 2025 CMPM 120, UCSC \n" +
+            "Disclaimer: This game is only for class assignment\n"+
+            "Assets & Tools:\n" +
+            "  - Developed using Phaser 3 and Javascript\n" +
+            "  - Sprites created with Piskel\n" +
+            "  - Fonts from dafont.com\n" +
+            "  - Sound effects from myinstants.com and sfxr.me\n" +
+            "Special Thanks:\n" +
+            "  - Online communities (Phaser forums, Stack Overflow)\n" +
+            "  - My professors, TAs, and classmates for their support\n"+
+            "  - Thanks to everyone who played this game";
+            
+        this.add.bitmapText(centerX, centerY, 'intro_used', creditsText, 30).setOrigin(0.5);
+
+        // Create return button
+        let returnButton = this.add.bitmapText(centerX, centerY + 300, 'intro_used', "RETURN", 40).setOrigin(0.5);
+        returnButton.setInteractive({ useHandCursor: true });
+        
+        // Add hover effects
+        returnButton.on('pointerover', () => {
+            returnButton.setTint(0xffa500);
+        });
+        
+        returnButton.on('pointerout', () => {
+            returnButton.clearTint();
+        });
+        
+        // Add click handler
+        returnButton.on('pointerdown', () => {
             this.sound.play('click');
-            this.scene.start('play_scene') 
-        }
-        // Return to menu on R key press
-        if(Phaser.Input.Keyboard.JustDown(keyRESET)){
             this.sound.stopAll();
-            this.sound.play('click');
-            this.scene.start('menu_scene') 
-        }
+            this.scene.start('menu_scene');
+        });
+        this.tweens.add({
+            targets: [returnButton],
+            scale: { from: 1, to: 1.1 },
+            duration: 1000,
+            yoyo: true,
+            repeat: -1
+        });
     }
 }
